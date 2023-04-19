@@ -1,7 +1,4 @@
 ﻿using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Polling;
-using Telegram.Bot.Types.Enums;
 
 namespace SimpleTelegramSender;
 
@@ -13,8 +10,12 @@ namespace SimpleTelegramSender;
 
     public Sender(string token, long chatId)
     {
-        _botClient = new TelegramBotClient(token);
-        _chatId = chatId;
+        if (!string.IsNullOrEmpty(token) && chatId != 0)
+        {
+            _botClient = new TelegramBotClient(token);
+            _chatId = chatId;
+        }
+        else { throw new ArgumentException("Chat ID and telegram bot token cannot be empty"); }
     }
 
     public async Task SendMessageAsync(string message)
